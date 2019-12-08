@@ -34,3 +34,4 @@ cobertura.ser
 *.pyc
 
 # Other?
+backup/
