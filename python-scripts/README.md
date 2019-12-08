@@ -14,3 +14,6 @@ Most of the scripts have header comments explaining what they do. All require an
 
 `TournamentLogtoolProcessor.dataFileIterator(csvurl, dirPath, extractorClass, datafilePrefix)` (with several additional options -- see the code) uses `TournamentGameIterator` to download and unpack game logs, then runs the specified extractor class on each one, storing the resulting data files in `dirPath/data` with the specified filename prefix. It returns an iterator of dict objects of the form `{'gameId':id, 'path':datafile-path}`. You can run this script from the command line if your python 3 installation is "conventional" -- see the `main()` function at the bottom of the file for details, or just run it without args to get instructions.
 
+Example:
+`iterate('https://powertac.org/wordpress/wp-content/uploads/2019/11/finals_2019_07.games_.csv', Path('data'), 'BrokerAccounting', '-','')` 
+Die CSV-Url kann auf der PowerTAC Webseite gefunden werden.

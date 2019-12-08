@@ -7,13 +7,9 @@ using TournamentGameIterator.csvIterator to pull in the game logs.
 import TournamentGameIterator as ti
 import string, re, os, subprocess, sys
 from pathlib import Path
-import logging
-
 processEnv = {'JAVA_HOME': os.environ.get('JAVA_HOME'),
               'Path' : os.environ.get('PATH') }
 
-list_logs_per = ['BrokerAccounting']
-list_logs = ['BrokerBalancingActions','BrokerImbalanceCost','ImbalanceStats','ImbalanceSummary','BrokerCosts','BrokerMktPrices','BrokerPriceAnomaly','CapacityAnalysis','CapacityValidator','CustomerBalancingCapacity','CustomerProductionConsumption','DemandResponseStats','EnergyMixStats','GameBrokerInfo','MeritOrder','MktPriceStats','ProductionConsumption','SolarProduction','TariffAnalysis','TariffMktShare','TotalDemand']
 
 def extractData (statefileName, gameId, extractorClass,
                  dataPrefix, extractorOptions,
@@ -27,7 +23,6 @@ def extractData (statefileName, gameId, extractorClass,
     #print("Processing ", statefileName)
     datafileName = dataPrefix + gameId + '.csv'
     dataPath = Path(logtoolDir, dataDir, datafileName)
-    print(str(dataPath))
     if force and dataPath.exists():
         dataPath.unlink()
     if not dataPath.exists():
@@ -45,7 +40,6 @@ def extractData (statefileName, gameId, extractorClass,
                                 cwd = logtoolDir))
         elif os.name == 'posix':
             try:
-                print(['mvn exec:exec -Dexec.args=\"' + args + '\"'])
                 subprocess.check_output(['mvn exec:exec -Dexec.args=\"' + args + '\"'],
                                     shell=True,
                                     env = processEnv,
@@ -72,9 +66,9 @@ def dataFileIter (tournamentCsvUrl, tournamentDir, extractorClass, dataPrefix,
 
 
 def iterate (url, tournamentDir, extractorClass, dataPrefix, options, force=False):
-    for data in dataFileIter(url, tournamentDir,
+    for data in list(dataFileIter(url, tournamentDir,
                              extractorClass, dataPrefix,
-                             options, force=force):
+                             options, force=force))[0]:
         print(data)
     
 
@@ -102,12 +96,8 @@ def main ():
 
 if __name__ == "__main__":
     #main()
-    #path= Path.cwd().parents[0]/'data'  #adapt to name of logfile
+    path= Path.cwd().parents[0]/'data'
     #iterate('https://powertac.org/wordpress/wp-content/uploads/2019/11/finals_2019_07.games_.csv', str(path), 'org.powertac.logtool.example.TariffMktShare', 'TariffMktShare_','')
-    #iterate('https://powertac.org/wordpress/wp-content/uploads/2019/11/finals_2019_07.games_.csv', '/Volumes/WD/data', 'org.powertac.logtool.example.BrokerAccounting', 'BrokerAccounting_','--per-broker')
-    number = 21
-    iterate('https://powertac.org/wordpress/wp-content/uploads/2019/11/finals_2019_07.games_.csv', '/Volumes/WD/data', 'org.powertac.logtool.example.{}'.format(list_logs_per[0]), '{}_'.format(list_logs_per[0]),'--per-broker')
-
+    iterate('https://powertac.org/wordpress/wp-content/uploads/2019/11/finals_2019_07.games_.csv', str(path), 'org.powertac.logtool.example.BrokerAccounting', 'BrokerAccounting_','')
     #print('https://powertac.org/wordpress/wp-content/uploads/2019/11/finals_2019_07.games_.csv', str(path), 'org.powertac.logtool.example.BrokerAccounting', 'BrokerAccounting_','')
     #print(Path('data').absolute())
-

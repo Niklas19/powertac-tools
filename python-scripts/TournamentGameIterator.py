@@ -34,7 +34,7 @@ def csvIter (tournamentCsvUrl, dirPath):
     '''
     content = urllib.request.urlopen(tournamentCsvUrl)
     gameList = io.StringIO(content.read().decode('utf-8'))    
-    csvReader = csv.DictReader(gameList, delimiter=',')
+    csvReader = csv.DictReader(gameList, delimiter=';')
     return(extractLogs(row['logUrl'], row['gameId'],
                        re.search('/([^/]+)$', row['logUrl']).group(1),
                        dirPath)

@@ -6,7 +6,7 @@ dir is the directory containing the game logs. This returns an iterator over
 paths to state logs extracted from the tournament.
 '''
 # Uses Python 3.4 or later
-year = 2016
+year = 2019
 import re, os, tarfile, subprocess
 from pathlib import Path
 
